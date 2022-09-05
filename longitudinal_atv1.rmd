@@ -65,10 +65,33 @@ t.test(dados$Tempo~dados$Treinamento)
 
 ## C)
 
+Utilizando a análise equivalente por meio da regressão linear, foi possível identificar com a análise do modelo que temos evidência a um nível de 5% de significância para afirmar que a diferença entre o tempo médio depois do treinamento reduziu o tempo de calçar a meia em 0,97 segundos.
+
+```{r echo=T,message=F,warning=F}
+
+df_spread <- spread(dados,Treinamento,Tempo)
+
+df_spread$dif_tempo <- df_spread$Depois-df_spread$Antes
+
+#dados2 = reshape(dados, 
+ #                timevar = "Tempo",
+  #               v.names = "Placa",
+   #              idvar = c("Id", "Sexo"),
+    #             direction = "wide")
+
+m1 <- lm(df_spread$dif_tempo~1)
+summary(m1)
+
+```
+
+## D)
+
+Analizando o efeito do sexo na mudança de escore
 
 ```{r echo=F,message=F,warning=F}
 
-lm(dados$Tempo~dados$Treinamento)
 
-7.1903-0.9169
+m1 <- lm(df_spread$dif_tempo~df_spread$Sexo)
+summary(m1)
+
 ```
