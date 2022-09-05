@@ -61,3 +61,14 @@ Considerando um nível de 5% de significância parece não haver diferença entr
 t.test(dados$Tempo~dados$Treinamento)
 
 ```
+
+
+## C)
+
+
+```{r echo=F,message=F,warning=F}
+
+lm(dados$Tempo~dados$Treinamento)
+
+7.1903-0.9169
+```
