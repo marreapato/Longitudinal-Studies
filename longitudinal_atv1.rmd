@@ -1,0 +1,55 @@
+---
+title: "Laboratorio 1"
+output: html_document
+date: "2022-09-04"
+---
+
+
+## A)
+
+Os dados estão no formato Long
+
+```{r echo=F,message=F,warning=F}
+
+library(tidyverse)
+#install.packages("tidyverse")
+
+dados <- read.table("LAB1Q1.txt",header = T)
+head(dados)
+```
+
+
+No geral o tempo médio gasto para calçar a meia foi maior para os homens do que para a mulheres. 
+
+```{r echo=F,message=F,warning=F}
+
+dados %>% group_by(Sexo) %>% summarise(mean(Tempo,na.rm=T))
+
+```
+
+Assim como o tempo médio para calçar a meia era maior antes do treinamento, independentemente do sexo do indivíduo.
+
+```{r echo=F,message=F,warning=F}
+
+dados %>% group_by(Treinamento) %>% summarise(mean(Tempo,na.rm=T))
+
+```
+
+No entanto quebrado por sexo e treinamento, não houve muita diferença na redução do tempo médio para calçar as meias para as mulheres antes e depois do treinamento, mas o oposto foi verificado nos homens onde houve uma diferença maior neste tempo médio (1,03 segundos de redução no tempo médio para calçar a meia após o treinamento).
+
+```{r echo=F,message=F,warning=F}
+dados %>% group_by(Treinamento,Sexo) %>% summarise(mean(Tempo,na.rm=T))
+
+
+```
+
+O boxplot dos tempos mostra que tanto para os homens quanto para as mulheres houve uma queda na mediana de tempo para calçar a meia após o treinamento, no entanto há de se considerar que um dos indivíduos no grupo do sexo feminino apresentou um tempo médio de 15,84 para calçar a meia, o que pode ter influenciado no tempo médio calculado para este grupo, ou seja dificultando ainda mais afirmar que houve uma redução significativa no tempo para calçar a meia neste grupo.
+
+
+```{r echo=F,message=F,warning=F}
+
+boxplot(dados$Tempo~dados$Sexo+dados$Treinamento)
+
+```
+
+## B)
