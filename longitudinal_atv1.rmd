@@ -53,3 +53,11 @@ boxplot(dados$Tempo~dados$Sexo+dados$Treinamento)
 ```
 
 ## B)
+
+Considerando um nível de 5% de significância parece não haver diferença entre os grupos antes e depois, no entanto considerando um nível de 10% de significância é possível afirmar que temos evidências para dizer que há diferença no tempo médio para calçar a meia antes e depois do treinamento.
+
+```{r echo=F,message=F,warning=F}
+
+t.test(dados$Tempo~dados$Treinamento)
+
+```
