@@ -105,7 +105,40 @@ summary(m1)
 ```{r echo=T,message=F,warning=F}
 
 
-m1 <- lm(df_spread$Depois~df_spread$Sexo+df_spread$Antes)
+m1 <- lm(Depois~Sexo+Antes,data = df_spread)
 summary(m1)
+
+```
+
+## F)
+
+```{r echo=T,message=F,warning=F}
+
+m2 <- lm(dif_tempo~Sexo+Antes,data = df_spread)
+summary(m2)
+
+
+```
+
+
+## G)
+
+```{r echo=T,message=F,warning=F}
+
+predict(m1,data.frame(Sexo="M",Antes=mean(df_spread$Antes, na.rm=TRUE)),se=F)
+
+predict(m1,data.frame(Sexo="F",Antes=mean(df_spread$Antes, na.rm=TRUE)),se=F)
+
+
+```
+
+
+
+```{r echo=T,message=F,warning=F}
+
+predict(m2,data.frame(Sexo="M",Antes=mean(df_spread$Antes, na.rm=TRUE)),se=F)
+
+predict(m2,data.frame(Sexo="F",Antes=mean(df_spread$Antes, na.rm=TRUE)),se=F)
+
 
 ```
