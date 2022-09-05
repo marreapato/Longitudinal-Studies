@@ -86,12 +86,25 @@ summary(m1)
 
 ## D)
 
-Analizando o efeito do sexo na mudança de escore
+Analizando o efeito do sexo na mudança de escore, temos evidência a um nível de 5% de significância para afirmar que há diferença no tempo médio para calçar a meia (uma redução de 0,92 segundos no tempo médio após o treinamento), no entanto não temos evidência a um nível de 5% de significância para afirmar que a mudança média nos dois grupos é diferente (para vias didáticas no sexo masculino a redução seria de 1,09 segundos).
 
-```{r echo=F,message=F,warning=F}
+```{r echo=T,message=F,warning=F}
 
 
 m1 <- lm(df_spread$dif_tempo~df_spread$Sexo)
+summary(m1)
+
+```
+
+
+## E)
+
+Ancova para o tempo depois - 
+
+```{r echo=T,message=F,warning=F}
+
+
+m1 <- lm(df_spread$Depois~df_spread$Sexo+df_spread$Antes)
 summary(m1)
 
 ```
