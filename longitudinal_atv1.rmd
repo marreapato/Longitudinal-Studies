@@ -114,6 +114,10 @@ summary(m1)
 
 ## F)
 
+**Ancova para a diferença de tempo - **Tomando como base o intercepto do modelo, temos evidência a um nível de 5% de significância de que a diferença de tempo médio para calçar a meia no grupo do sexo feminino não é igual a 0, verificando $\beta_1$ não temos evidência a um nível de 5% de significância para afirmar que a diferença no tempo médio após o treinamento muda para os homens e as mulheres, por $\beta_2$ temos evidência a um nível de 5% para afirmar que que a diferença de tempo médio após o treinamento está relacionado com o tempo médio anterior ao treinamento para os dois grupos.
+
+As interpretações são similares em relação a letra **E)**, no entanto ao invés de serem interpretadas com o tempo médio após o treinamento devem ser interpretadas sobre a diferença de tempo médio (após e antes o treinamento).
+
 ```{r echo=T,message=F,warning=F}
 
 m2 <- lm(dif_tempo~Sexo+Antes,data = df_spread)
