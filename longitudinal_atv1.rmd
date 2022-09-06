@@ -129,6 +129,8 @@ summary(m2)
 
 ## G)
 
+Com base no tempo médio para calçar a meia antes do treinamento, há de se esperar que o tempo médio para calçar a meia para as mulheres seja de 6.20, para os homens este tempo médio após o treinamento seria de 6.38.
+
 ```{r echo=T,message=F,warning=F}
 
 predict(m1,data.frame(Sexo="M",Antes=mean(df_spread$Antes, na.rm=TRUE)),se=F)
