@@ -140,13 +140,11 @@ predict(m1,data.frame(Sexo="F",Antes=mean(df_spread$Antes, na.rm=TRUE)),se=F)
 
 ```
 
-
+Com base no tempo médio para calçar a meia antes do treinamento, há de se esperar que a diferença no tempo médio para calçar a meia após o treinamento para as mulheres seja de -0.99 (ou seja a redução em média de quase 1 segundo para as mulheres), para os homens esta redução no tempo médio após o treinamento seria de -0.80.
 
 ```{r echo=T,message=F,warning=F}
 
 predict(m2,data.frame(Sexo="M",Antes=mean(df_spread$Antes, na.rm=TRUE)),se=F)
 
 predict(m2,data.frame(Sexo="F",Antes=mean(df_spread$Antes, na.rm=TRUE)),se=F)
-
-
 ```
