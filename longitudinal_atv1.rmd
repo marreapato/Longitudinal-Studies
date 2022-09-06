@@ -99,9 +99,9 @@ summary(m1)
 
 ## E)
 
-**Ancova para o tempo depois - **Tomando como base o intercepto do modelo, temos evidência a um nível de 5% de significância de que o tempo médio para calçar a meia após o treinamento no grupo do sexo feminino não é igual a 0, verificando $\beta_1$ não temos evidência a um nível de 5% de significância para afirmar que o tempo médio após o treinamento é diferente para os homens e as mulheres, por $\beta_2$ não temos evidência para afirmar que que o tempo médio após o treinamento está relacionado com o tempo médio anterior ao treinamento para os dois grupos.
+**Ancova para o tempo depois - **Tomando como base o intercepto do modelo, temos evidência a um nível de 5% de significância de que o tempo médio para calçar a meia após o treinamento no grupo do sexo feminino não é igual a 0, verificando $\beta_1$ não temos evidência a um nível de 5% de significância para afirmar que o tempo médio após o treinamento é diferente para os homens e as mulheres, por $\beta_2$ temos evidência a um nível de 5% para afirmar que que o tempo médio após o treinamento está relacionado com o tempo médio anterior ao treinamento para os dois grupos.
 
-No teste de mudança de escore afirmamos que existe diferença no tempo médio após o treinamento (uma redução do tempo) no entanto que essa diferença não mudava significativamente para os sexos masculino e feminino, realizando a ANCOVA... 
+No teste de mudança de escore afirmamos que existe diferença no tempo médio após o treinamento (uma redução do tempo) no entanto que essa diferença não mudava significativamente para os sexos masculino e feminino, realizando a ANCOVA, similarmente, existe uma diferença significativa no tempo médio depois do treinamento para o grupo de controle, sendo que este tempo médio após o treinamento é relacionado com o tempo pré-treino, no entanto não foi possível identificar que os dois grupos possuem tempo médio depois do treinamento diferentes. 
 
 
 ```{r echo=T,message=F,warning=F}
