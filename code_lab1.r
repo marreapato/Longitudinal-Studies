@@ -96,3 +96,45 @@ plotmeans(nas~tempo, data=dados,barwidth = 3)
 ## c
 
 
+plot(nas~tempo, data = dados, col = 'gray50', pch = '.', xlab = 'Tempo(Horas)',ylab="açucar no sangue")
+      #kernel
+with (dados, {
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 1), col = 2)
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.25), col = 3)
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.5), col = 4)
+})
+
+#lowess
+
+plot(nas~tempo, data = dados, col = 'gray50', pch = '.', xlab = 'Tempo(Horas)',
+      ylab='Nivel a ̧cucar no san')
+
+with (dados, {
+  lines (loess.smooth(tempo, nas, family = 'gaussian'), lty = 3, col = 3, lwd = 2)
+  lines (loess.smooth(tempo, nas, family = 'gaussian', degree = 2), lty = 3, col = 2, lwd = 1)
+})
+
+#splines
+
+plot (nas~tempo, data = dados, col ='gray50', pch = '.', xlab = 'Tempo(Horas)',
+      ylab='Nivel a ̧cucar no sangu')
+with (dados, {
+  lines (smooth.spline (tempo, nas), lty = 4, col = 4, lwd = 2)
+  lines (smooth.spline (tempo, nas, df=2), lty = 4, col = 2, lwd = 1)
+})
+
+#todos
+
+plot (nas~tempo, data = dados, col ='gray50', pch = '.', xlab = 'Tempo(Horas)',
+      ylab='Nivel a ̧cucar no sangu')
+with (dados, {
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 1), col = 2)
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.25), col = 3)
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.5), col = 4)
+  lines (loess.smooth(tempo, nas, family = 'gaussian'), lty = 3, col = 3, lwd = 2)
+  lines (loess.smooth(tempo, nas, family = 'gaussian', degree = 2), lty = 3, col = 2, lwd = 1)
+  lines (smooth.spline (tempo, nas), lty = 4, col = 4, lwd = 2)
+  lines (smooth.spline (tempo, nas, df=2), lty = 4, col = 2, lwd = 1)
+})
+
+#d)
