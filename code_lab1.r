@@ -138,3 +138,37 @@ with (dados, {
 })
 
 #d)
+
+library(lattice)
+#dados$grupo <- as.factor(dados$grupo)
+xyplot(nas~tempo+grupo, data = dados,type = 'l', group = id, xlab = 'Tempo(horas)',col.line
+        = 'gray20', ylab='nivel de açucar',strip = strip.custom (var.name = 'grupo'))
+
+
+
+group.subset1= subset(dados,dados$grupo== 1)
+mean.group1=tapply(group.subset1$nas,group.subset1$tempo, mean)
+mean.group1
+group.subset2= subset(dados,dados$grupo== 2)
+
+mean.group2=tapply(group.subset2$nas,group.subset2$tempo, mean)
+mean.group2
+group.subset3= subset(dados,dados$grupo== 3)
+mean.group3=tapply(group.subset3$nas,group.subset3$tempo, mean)
+mean.group3
+
+plot(dados$tempo,dados$nas, type = 'p', col='white', ylab='nivel medio de acucar no sangue',
+     xlab='Horas', main='Perfil m ́edio por grup')
+
+lines(mean.group1, col='red', lwd=2, lty=1)
+lines(mean.group2, col='black', lwd=2, lty=3)
+lines(mean.group3, col='blue', lwd=3, lty=2)
+legend(2,50,c('grupo 1', 'grupo 2', 'grupo 3'), lty=c(3,1), col=c( 'black', 'red', 'blue')
+)
+
+# e)
+
+source('variog.txt')
+mean.nas=tapply(dados$nas,dados$tempo, mean)
+residuo=dados$nas- rep(mean.nas, 36)
+vargm = variog(indv = dados$id, time = dados$tempo,Y = residuo)
