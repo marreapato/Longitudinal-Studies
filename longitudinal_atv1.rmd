@@ -4,6 +4,7 @@ output: html_document
 date: "2022-09-04"
 ---
 
+# 1)
 
 ## A)
 
@@ -148,3 +149,100 @@ predict(m2,data.frame(Sexo="M",Antes=mean(df_spread$Antes, na.rm=TRUE)),se=F)
 
 predict(m2,data.frame(Sexo="F",Antes=mean(df_spread$Antes, na.rm=TRUE)),se=F)
 ```
+
+
+# 2)
+
+## a)
+
+### (a)
+
+Com base na média e desvio padrão ao longo do tempo, é possível ver que a média de açucar no Sangue diminui ao longo do tempo.
+
+```{r echo=F,message=F,warning=F}
+
+dados <- read.table("insulin.dat",header = F)
+colnames(dados) <- c("id","tempo","nas","grupo")
+
+#dados$tempo <- as.factor(dados$tempo)
+
+dados %>% group_by(tempo) %>% summarise(media=mean(nas),desvio=sd(nas))
+
+```
+
+### (b)
+
+A Matriz de correlação mostra que do tempo 0 até o tempo 3 vai ocorrendo uma certa inversão (ou diminuição) da correlação, a comparação entre o baseline e 3 horas depois por exemplo retorna uma correlação negativa, indicando que quando o açucar no sangue aumenta no baseline ele diminui no tempo 3.
+
+```{r echo=F,message=F,warning=F}
+#install.packages("corrplot")
+library(corrplot)
+
+df_spread <- spread(dados,tempo,nas)
+df_spread<- df_spread[,-c(1,2)]
+
+dados_cor <- cor(df_spread)
+corrplot(dados_cor)
+```
+
+## b)
+
+### (a)
+
+O nível de insulina aparentemente apresenta uma queda nos pontos de dispersão.
+
+```{r echo=F,message=F,warning=F}
+plot(nas~as.numeric(tempo),data = dados, pch = ".", xlab = "Tempo(Horas)", ylab="Nivel de a ̧c ́ucar
+      no sangue")
+```
+
+
+### (b)
+
+Diversas trajetórias mostram um comportamento decrescente ao avançar do tempo.
+
+```{r echo=F,message=F,warning=F}
+
+library(lattice)
+
+xyplot(nas~as.numeric(tempo), data = dados, type = 'l', group = id, xlab = 'Tempo(horas)', col.line
+       = 'gray20', ylab = 'Nivel de açucar no sangue')
+
+```
+
+
+### (c)
+
+Escolhendo 5 trajetórias esse comportamento se repete e é possível ver a queda do nível de açucar no sangue em 5 coelhos.
+
+
+```{r echo=F,message=F,warning=F}
+
+s = sample(unique (dados$id), size = 5)
+
+plot(nas~as.numeric(tempo), data = dados, col = "gray50", xlab = "Tempo", ylab = "N ́ıvel de a ̧cuucar
+      no sangue")
+
+for (i in 1:5) {
+  lines (dados$tempo[dados$id == s[i]],
+         dados$nas[dados$id == s[i]], lwd = 1.5)
+}
+
+
+
+```
+
+
+### (d)
+
+No gráfico de comportamento médio fica mais evidente a queda do nível de açucar no sangue (nas) ao longo do tempo
+
+```{r echo=F,message=F,warning=F}
+
+library(gplots)
+#install.packages("gplots")
+plotmeans(nas~tempo, data=dados,barwidth = 3)
+
+```
+
+## c)
