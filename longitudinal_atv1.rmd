@@ -246,3 +246,139 @@ plotmeans(nas~tempo, data=dados,barwidth = 3)
 ```
 
 ## c)
+
+(i) - kernel em azul com bandwith 1, vermelho 0.25 e verde 0.5, nesse método vemos que quanto maior o bandwith mais rígida será a curva.
+
+```{r echo=F,message=F,warning=F}
+
+
+plot(nas~tempo, data = dados, col = 'gray50', pch = '.', xlab = 'Tempo(Horas)',ylab="açucar no sangue")
+#kernel
+with (dados, {
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 1), col = "blue")
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.25), col = "red")
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.5), col = "green")
+})
+```
+
+
+
+(ii) - Lowess com polinômio de grau 1 (em azul claro), rosa (polinômio de grau 2), verifica-se que no polinômio de grau 2 as curvaturas ocorrem enquanto no de grau 1 temos uma reta.
+
+```{r echo=F,message=F,warning=F}
+
+plot(nas~tempo, data = dados, col = 'gray50', pch = '.', xlab = 'Tempo(Horas)',ylab="açucar no sangue")
+
+with (dados, {
+  lines (loess.smooth(tempo, nas, family = 'gaussian'), lty = 3, col = "lightblue", lwd = 2)
+  lines (loess.smooth(tempo, nas, family = 'gaussian', degree = 2), lty = 3, col = "magenta", lwd = 1)
+})
+
+
+```
+
+
+
+(iii) - Splines - em marrom com o parâmetro default onde é ajustada uma reta com curvaturas e em laranja com df=2 onde há uma reta perfeita.
+
+```{r echo=F,message=F,warning=F}
+plot (nas~tempo, data = dados, col ='gray50', pch = '.', xlab = 'Tempo(Horas)',
+      ylab='Nivel a ̧cucar no sangu')
+with (dados, {
+  lines (smooth.spline (tempo, nas), lty = 4, col = "brown", lwd = 2)
+  lines (smooth.spline (tempo, nas, df=2), lty = 4, col = "orange", lwd = 1)
+})
+
+```
+
+(c4) - Comparando todas as curvas a que mais teve ruídos de curvatura foi o kernel com bandwith=0.25, apesar das similaridades nenhuma das curvas ficou sobreposta, no entanto todas indicaram o mesmo comportamento, o de queda no nível de açucar no sangue com o passar do tempo.
+
+```{r echo=F,message=F,warning=F}
+plot (nas~tempo, data = dados, col ='gray50', pch = '.', xlab = 'Tempo(Horas)',
+      ylab='Nivel a ̧cucar no sangu')
+with (dados, {
+    lines(ksmooth(tempo, nas, 'normal', bandwidth = 1), col = "blue")
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.25), col = "red")
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.5), col = "green")
+   lines (loess.smooth(tempo, nas, family = 'gaussian'), lty = 3, col = "lightblue", lwd = 2)
+  lines (loess.smooth(tempo, nas, family = 'gaussian', degree = 2), lty = 3, col = "magenta", lwd = 1)
+  lines (smooth.spline (tempo, nas), lty = 4, col = "brown", lwd = 2)
+  lines (smooth.spline (tempo, nas, df=2), lty = 4, col = "orange", lwd = 1)
+})
+
+```
+
+## d)
+
+ - (d1) No Spaggeti Plot do grupo 1 parece haver uma maior variação no nível de açucar dos coelhos ao longo to tempo (apesar de ser claro o comportamento de queda), enquanto nos grupos 2 e 3 o comportamento de queda é bastante claro.
+
+```{r echo=F,message=F,warning=F}
+
+library(lattice)
+dados$grupo <- as.factor(as.character(dados$grupo))
+
+xyplot(nas~tempo|grupo, data = dados,type = 'l', group = id, xlab = 'Tempo(horas)',col.line
+       = 'gray20', ylab='nivel de açucar',strip = strip.custom (var.name = 'grupo'))
+
+```
+
+
+ - (d2) No gráfico de perfis médios por grupo o grupo 1 é o que apresenta menor nivel médio de açucar no sangue ao decorrer do tempo até o momento final do estudo, enquanto o grupo 2 finaliza o estudo com o maior nível médio de açucar no sangue, apesar de ter registrado uma queda, já o grupo 3 é o que inicia com maior nível médio de açucar no sangue e termina com uma quantidade próxima ao do grupo 1.
+
+```{r echo=F,message=F,warning=F}
+
+
+group.subset1= subset(dados,dados$grupo== 1)
+mean.group1=tapply(group.subset1$nas,group.subset1$tempo, mean)
+mean.group1
+group.subset2= subset(dados,dados$grupo== 2)
+
+mean.group2=tapply(group.subset2$nas,group.subset2$tempo, mean)
+mean.group2
+group.subset3= subset(dados,dados$grupo== 3)
+mean.group3=tapply(group.subset3$nas,group.subset3$tempo, mean)
+mean.group3
+
+
+plot(dados$tempo,dados$nas, type = 'p', col='white', ylab='nivel medio de acucar no sangue',
+     xlab='Horas', main='Perfil m ́edio por grup')
+df_mean1=data.frame(mean.group1=mean.group1,tempo=c(0,0.5,1,1.5,2,2.5,3))
+df_mean2=data.frame(mean.group2=mean.group2,tempo=c(0,0.5,1,1.5,2,2.5,3))
+df_mean3=data.frame(mean.group3=mean.group3,tempo=c(0,0.5,1,1.5,2,2.5,3))
+
+lines(y=df_mean1$mean.group1,df_mean1$tempo, col='red', lwd=2, lty=1)
+lines(y=df_mean2$mean.group2,df_mean2$tempo, col='black', lwd=2, lty=3)
+lines(y=df_mean3$mean.group3,df_mean3$tempo, col='blue', lwd=3, lty=2)
+legend(2,130,c('grupo 1', 'grupo 2', 'grupo 3'), lty=c(3,1), col=c( 'black', 'red', 'blue')
+)
+
+```
+
+
+
+ - (d3) No geral o erro nos tempos do grupo 1 foi maior que o dos grupos 2 e 3, verificando o baseline por exemplo, o grupo um foi o que apresentou maior variação em relação a média.
+ 
+ 
+```{r echo=F,message=F,warning=F}
+
+plotmeans(nas~tempo, data=dados[dados$grupo==1,],main="Grupo1",barwidth = 3)
+plotmeans(nas~tempo, data=dados[dados$grupo==2,],main="Grupo2",barwidth = 3)
+plotmeans(nas~tempo, data=dados[dados$grupo==3,],main="Grupo3",barwidth = 3)          
+
+
+```
+
+
+## e)
+
+O variograma mostra que a correlação entre as medidas repetidas decresce de acordo com o lag.
+
+```{r echo=F,message=F,warning=F,results='hide'}
+
+
+source('variog.txt')
+mean.nas=tapply(dados$nas,dados$tempo, mean)
+residuo=dados$nas- rep(mean.nas, 36)
+vargm = variog(indv = dados$id, time = dados$tempo,Y = residuo)
+
+```
