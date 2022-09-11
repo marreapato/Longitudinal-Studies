@@ -19,10 +19,10 @@ df_spread <- spread(dados,Treinamento,Tempo)
 df_spread$dif_tempo <- df_spread$Depois-df_spread$Antes
 
 #dados2 = reshape(dados, 
- #                timevar = "Tempo",
-  #               v.names = "Placa",
-   #              idvar = c("Id", "Sexo"),
-    #             direction = "wide")
+#                timevar = "Tempo",
+#               v.names = "Placa",
+#              idvar = c("Id", "Sexo"),
+#             direction = "wide")
 
 m1 <- lm(df_spread$dif_tempo~1)
 summary(m1)
@@ -75,7 +75,7 @@ plot(nas~as.numeric(tempo),data = dados, pch = ".", xlab = "Tempo(Horas)", ylab=
 library(lattice)
 
 xyplot(nas~as.numeric(tempo), data = dados, type = 'l', group = id, xlab = 'Tempo(horas)', col.line
-  = 'gray20', ylab = 'Nivel de açucar no sangue')
+       = 'gray20', ylab = 'Nivel de açucar no sangue')
 
 
 
@@ -97,21 +97,22 @@ plotmeans(nas~tempo, data=dados,barwidth = 3)
 
 
 plot(nas~tempo, data = dados, col = 'gray50', pch = '.', xlab = 'Tempo(Horas)',ylab="açucar no sangue")
-      #kernel
+#kernel
 with (dados, {
-  lines(ksmooth(tempo, nas, 'normal', bandwidth = 1), col = 2)
-  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.25), col = 3)
-  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.5), col = 4)
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 1), col = "blue")
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.25), col = "red")
+  lines(ksmooth(tempo, nas, 'normal', bandwidth = 0.5), col = "green")
 })
-
+#legend(2,128,c('grupo 1', 'grupo 2', 'grupo 3'), lty=c(3,1), col=c( 'black', 'red', 'blue')
+#)
 #lowess
 
 plot(nas~tempo, data = dados, col = 'gray50', pch = '.', xlab = 'Tempo(Horas)',
-      ylab='Nivel a ̧cucar no san')
+     ylab='Nivel a ̧cucar no san')
 
 with (dados, {
-  lines (loess.smooth(tempo, nas, family = 'gaussian'), lty = 3, col = 3, lwd = 2)
-  lines (loess.smooth(tempo, nas, family = 'gaussian', degree = 2), lty = 3, col = 2, lwd = 1)
+  lines (loess.smooth(tempo, nas, family = 'gaussian'), lty = 3, col = "lightblue", lwd = 2)
+  lines (loess.smooth(tempo, nas, family = 'gaussian', degree = 2), lty = 3, col = "magenta", lwd = 1)
 })
 
 #splines
@@ -119,8 +120,8 @@ with (dados, {
 plot (nas~tempo, data = dados, col ='gray50', pch = '.', xlab = 'Tempo(Horas)',
       ylab='Nivel a ̧cucar no sangu')
 with (dados, {
-  lines (smooth.spline (tempo, nas), lty = 4, col = 4, lwd = 2)
-  lines (smooth.spline (tempo, nas, df=2), lty = 4, col = 2, lwd = 1)
+  lines (smooth.spline (tempo, nas), lty = 4, col = "brown", lwd = 2)
+  lines (smooth.spline (tempo, nas, df=2), lty = 4, col = "orange", lwd = 1)
 })
 
 #todos
@@ -138,11 +139,12 @@ with (dados, {
 })
 
 #d)
-
+?xyplot()
 library(lattice)
-#dados$grupo <- as.factor(dados$grupo)
-xyplot(nas~tempo+grupo, data = dados,type = 'l', group = id, xlab = 'Tempo(horas)',col.line
-        = 'gray20', ylab='nivel de açucar',strip = strip.custom (var.name = 'grupo'))
+dados$grupo <- as.factor(as.character(dados$grupo))
+
+xyplot(nas~tempo|grupo, data = dados,type = 'l', group = id, xlab = 'Tempo(horas)',col.line
+       = 'gray20', ylab='nivel de açucar',strip = strip.custom (var.name = 'grupo'))
 
 
 
@@ -159,12 +161,21 @@ mean.group3
 
 plot(dados$tempo,dados$nas, type = 'p', col='white', ylab='nivel medio de acucar no sangue',
      xlab='Horas', main='Perfil m ́edio por grup')
+df_mean1=data.frame(mean.group1=mean.group1,tempo=c(0,0.5,1,1.5,2,2.5,3))
+df_mean2=data.frame(mean.group2=mean.group2,tempo=c(0,0.5,1,1.5,2,2.5,3))
+df_mean3=data.frame(mean.group3=mean.group3,tempo=c(0,0.5,1,1.5,2,2.5,3))
 
-lines(mean.group1, col='red', lwd=2, lty=1)
-lines(mean.group2, col='black', lwd=2, lty=3)
-lines(mean.group3, col='blue', lwd=3, lty=2)
-legend(2,50,c('grupo 1', 'grupo 2', 'grupo 3'), lty=c(3,1), col=c( 'black', 'red', 'blue')
+lines(y=df_mean1$mean.group1,df_mean1$tempo, col='red', lwd=2, lty=1)
+lines(y=df_mean2$mean.group2,df_mean2$tempo, col='black', lwd=2, lty=3)
+lines(y=df_mean3$mean.group3,df_mean3$tempo, col='blue', lwd=3, lty=2)
+legend(2,140,c('grupo 1', 'grupo 2', 'grupo 3'), lty=c(3,1), col=c( 'black', 'red', 'blue')
 )
+library(gplots)
+
+par(mfrow=c(2,2))
+plotmeans(nas~tempo, data=dados[dados$grupo==1,],main="Grupo1")
+plotmeans(nas~tempo, data=dados[dados$grupo==2,],main="Grupo2")
+plotmeans(nas~tempo, data=dados[dados$grupo==3,],main="Grupo3")          
 
 # e)
 
