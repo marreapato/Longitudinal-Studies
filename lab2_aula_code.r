@@ -19,3 +19,17 @@ xyplot(y~as.numeric(day), data = dados, type = 'l', group = id, xlab = 'Dia', co
 
 
 #tabela anova
+
+#soma dos quadrados totais
+
+y_p_p=mean(dados$y)
+SQT=sum((dados$y-y_p_p)^2)
+
+#soma dos quadrados dos grupos
+
+ids_media <- dados %>% group_by(id) %>% summarise(mean(y))
+SQE <- sum((ids_media$`mean(y)`-y_p_p)^2)
+
+SQD <- SQT-SQE
+
+
