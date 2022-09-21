@@ -110,5 +110,11 @@ pcomp1
 
 dados2 <- read.csv("fosfato.csv")
 
+dados2_gathe <- gather(data = dados2[,-c(1,2)])
+
+dados2_gathe %>% group_by(key) %>% summarise(media=mean(value),desvio=sd(value))
+
 dados_cor <- cor(dados2[,-c(1,2)])
 corrplot(dados_cor,method = "number")
+
+#b
