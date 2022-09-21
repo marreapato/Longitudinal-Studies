@@ -61,7 +61,7 @@ QMt=SQt/(n-1)
 #QUADRADO MEDIO RES
 
 QMr=SQr/((m-1)*(n-1))
-
+df_res=(m-1)*(n-1)
 #total
 (m*n)-1
 
@@ -75,16 +75,35 @@ SQy <- sum((dados$y-y_p_p)^2)
 
 F_SNED=QMi/QMr
 F_SNED
-qf(0.05,df1 =53 ,df2 = 53*4)
+qf(0.05,df1 =53 ,df2 = 53*4,lower.tail = F)
 
 #tempos
 
 F_SNED=QMt/QMr
 F_SNED
-
+qf(0.05,df1 =4 ,df2 = 53*4,lower.tail = F)
 #n rejeita h0
 
 dados.aov = aov(y~factor(day) + Error(factor(id)), data = dados)
 dados.aov = aov(y~factor(day) + (factor(id)), data = dados)
 summary(dados.aov)
 
+#d)
+
+y.v = df_spread
+
+rfactor = factor(c("t1","t2","t3","t4","t5"))
+
+C = contr.poly(5)
+
+num.est=m*((t(colMeans(y.v))%*%C))*(t(colMeans(y.v))%*%(C))
+
+den.est=QMr
+F_sned=num.est/den.est
+
+pcomp1 = 1-pf(F_sned[1], 1, df_res)
+pcomp1
+
+######
+
+#2)
