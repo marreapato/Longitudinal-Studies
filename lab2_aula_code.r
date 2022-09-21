@@ -2,7 +2,7 @@ library(tidyverse)
 
 dados <- read.table("LAB2Q1.txt")
 
-dados %>% group_by(day) %>% summarise(media=mean(y),desvios=sd(y))#medias e devios
+medias_tempos=dados %>% group_by(day) %>% summarise(media=mean(y),desvios=sd(y))#medias e devios
 
 #matriz de cor
 
@@ -18,32 +18,33 @@ xyplot(y~as.numeric(day), data = dados, type = 'l', group = id, xlab = 'Dia', co
        = 'gray20', ylab = 'Perfis de Crescimento')
 
 
-#tabela anova
+#tabela anova medidas repetidas
 
-#soma dos quadrados totais
 
 y_p_p=mean(dados$y)
-SQT=sum((dados$y-y_p_p)^2)
-n=nrow(dados)
 
-#soma dos quadrados entre grupos
 
+#soma dos quadrados individuos
+#4 pontos no tempo
+n=nrow(medias_tempos)
 ids_media <- dados %>% group_by(id) %>% summarise(mean(y))
-SQE <- sum((ids_media$`mean(y)`-y_p_p)^2)
+m=nrow(ids_media)
+SQi <- n*sum((ids_media$`mean(y)`-y_p_p)^2)
 
-#SOMA DOS QUADRADOS Dentro
 
-SQD <- SQT-SQE
-g=nrow(ids_media)
+
+#SOMA DOS QUADRADOS tempos
+
+SQt <- m*sum((medias_tempos$media-y_p_p)^2)
 
 #QUADRADO MEDIO ENTRE
 
-QME=SQE/(g-1)
+QMi=SQi/(m-1)
 
 #QUADRADO MEDIO DENTRO
 
-QMD=SQD/(n-g)
-
+QMt=SQt/(n-1)
+#modificar abaixo
 #estatistica F
 #F 53,216
 
