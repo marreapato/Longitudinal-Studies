@@ -37,6 +37,9 @@ SQi <- n*sum((ids_media$`mean(y)`-y_p_p)^2)
 
 SQt <- m*sum((medias_tempos$media-y_p_p)^2)
 
+#soma quadrados dos residuos (verificar)
+SQr <- sum((dados$y-ids_media$`mean(y)`-medias_tempos$media+y_p_p)^2)
+
 #QUADRADO MEDIO ENTRE
 
 QMi=SQi/(m-1)
@@ -44,13 +47,29 @@ QMi=SQi/(m-1)
 #QUADRADO MEDIO DENTRO
 
 QMt=SQt/(n-1)
-#modificar abaixo
-#estatistica F
-#F 53,216
+#QUADRADO MEDIO RES
 
-F_SNED=QME/QMD
+QMr=SQr/((m-1)*(n-1))
+
+#total
+(m*n)-1
+
+#SQy
+
+SQy <- sum((dados$y-y_p_p)^2)
+
+#modificar abaixo
+#estatistica F 53,53*4
+#F INDIVIDUOS
+
+F_SNED=QMi/QMr
 F_SNED
-qf(0.05,df1 =53 ,df2 = 216)
+qf(0.05,df1 =53 ,df2 = 53*4)
+
+#tempos
+
+F_SNED=QMt/QMr
+F_SNED
 
 #n rejeita h0
 
@@ -58,5 +77,3 @@ dados.aov = aov(y~factor(day) + Error(factor(id)), data = dados)
 
 summary(dados.aov)
 
-
-sum((dados$y-ids_media$`mean(y)`)^2)
