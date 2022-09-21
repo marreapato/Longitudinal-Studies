@@ -109,3 +109,6 @@ pcomp1
 #2)
 
 dados2 <- read.csv("fosfato.csv")
+
+dados_cor <- cor(dados2[,-c(1,2)])
+corrplot(dados_cor,method = "number")
