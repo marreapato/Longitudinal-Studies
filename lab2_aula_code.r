@@ -53,6 +53,9 @@ qf(0.05,df1 =53 ,df2 = 216)
 
 #n rejeita h0
 
-dados.aov = aov(y~day + Error(id), data = dados)
+dados.aov = aov(y~factor(day) + Error(factor(id)), data = dados)
 
 summary(dados.aov)
+
+
+sum((dados$y-ids_media$`mean(y)`)^2)
