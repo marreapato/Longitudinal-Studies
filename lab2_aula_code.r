@@ -107,3 +107,5 @@ pcomp1
 ######
 
 #2)
+
+dados2 <- read.csv("fosfato.csv")
