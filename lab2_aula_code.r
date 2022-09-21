@@ -110,11 +110,17 @@ pcomp1
 
 dados2 <- read.csv("fosfato.csv")
 
-dados2_gathe <- gather(data = dados2[,-c(1,2)])
+dados2_gathe <- gather(data = dados2,key=tempo,value=fosfato,X0,X0.5,X1,X1.5,X2,X3,X4,X5)
 
-dados2_gathe %>% group_by(key) %>% summarise(media=mean(value),desvio=sd(value))
+
+
+dados2_gathe %>% group_by(tempo) %>% summarise(media=mean(fosfato),desvio=sd(fosfato))
 
 dados_cor <- cor(dados2[,-c(1,2)])
 corrplot(dados_cor,method = "number")
 
 #b
+
+
+with(dados2_gathe, interaction.plot(tempo, Grupo, fosfato, ylim = c(2, 5), lty = c(1, 2), lwd = 3, ylab = "media de
+                         fosfato", xlab = "tempo", trace.label = "Grupo"))
