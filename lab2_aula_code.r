@@ -39,6 +39,17 @@ SQt <- m*sum((medias_tempos$media-y_p_p)^2)
 
 #soma quadrados dos residuos (verificar)
 SQr <- sum((dados$y-ids_media$`mean(y)`-medias_tempos$media+y_p_p)^2)
+#54 individuos
+m
+vetor_medias=NULL
+for(i in 1:m){
+vetor_medias <- append(rep(ids_media$`mean(y)`[i],5),x = vetor_medias)
+}
+vetor_medias
+
+dados_double_sum <- dados %>% group_by(id,day) %>% cbind(media_tempos=rep(medias_tempos$media,54),ind_medias=vetor_medias)
+
+SQr <- sum((dados_double_sum$y-dados_double_sum$ind_medias-dados_double_sum$media_tempos+y_p_p)^2)
 
 #QUADRADO MEDIO ENTRE
 
@@ -74,6 +85,6 @@ F_SNED
 #n rejeita h0
 
 dados.aov = aov(y~factor(day) + Error(factor(id)), data = dados)
-
+dados.aov = aov(y~factor(day) + (factor(id)), data = dados)
 summary(dados.aov)
 
