@@ -137,3 +137,9 @@ summary(f.aov2)
 library(afex)
 
 #aov_ez(id = (ID),dv = fosfato, data = dados2_gathe,between = dad\tempo)
+
+dados2_gathe$Grupo <- as.factor(dados2_gathe$Grupo)
+dados2_gathe$tempo <- as.factor(dados2_gathe$tempo)
+
+aov_ez("ID", "fosfato", dados2_gathe, between = "Grupo", 
+       within = c("ID", "tempo"))#maneira correta
