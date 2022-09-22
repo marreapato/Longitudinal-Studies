@@ -129,6 +129,11 @@ with(dados2_gathe, interaction.plot(tempo, Grupo, fosfato, ylim = c(2, 5), lty =
 
 #c
 
+f.aov2 = aov(fosfato~Grupo*tempo + Error(ID), data = dados2_gathe)
+summary(f.aov2)
+
 #d
 #install.packages("afex")
 library(afex)
+
+#aov_ez(id = (ID),dv = fosfato, data = dados2_gathe,between = dad\tempo)
