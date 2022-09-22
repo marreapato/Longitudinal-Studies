@@ -129,3 +129,6 @@ with(dados2_gathe, interaction.plot(tempo, Grupo, fosfato, ylim = c(2, 5), lty =
 
 #c
 
+#d
+#install.packages("afex")
+library(afex)
