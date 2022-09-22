@@ -121,6 +121,9 @@ corrplot(dados_cor,method = "number")
 
 #b
 
+xyplot(fosfato~as.factor(tempo) | as.factor(Grupo), data = dados2_gathe, groups = ID, type = "o", panel = panel.superpose)
+
 
 with(dados2_gathe, interaction.plot(tempo, Grupo, fosfato, ylim = c(2, 5), lty = c(1, 2), lwd = 3, ylab = "media de
                          fosfato", xlab = "tempo", trace.label = "Grupo"))
+
