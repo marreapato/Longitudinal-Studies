@@ -8,12 +8,14 @@ date: "2022-09-24"
 
 ## A)
 
+### (i)
+
 teste
 
 ```{r echo=F,message=F,warning=F}
 
 library(tidyverse)
-
+library(corrplot)
 dados <- read.table("LAB2Q1.txt")
 
 medias_tempos=dados %>% group_by(day) %>% summarise(media=mean(y),desvios=sd(y))#medias e devios
@@ -22,3 +24,33 @@ medias_tempos
 
 ```
 
+
+### (ii)
+
+
+```{r echo=F,message=F,warning=F}
+
+
+df_spread <- spread(dados,day,y)
+df_spread<- df_spread[,-c(1)]
+dados_cor <- cor(df_spread)
+corrplot(dados_cor,method = "number")
+
+```
+
+
+### (iii)
+
+
+```{r echo=F,message=F,warning=F}
+
+#grafico dos perfis de crescimento
+library(lattice)
+
+xyplot(y~as.numeric(day), data = dados, type = 'l', group = id, xlab = 'Dia', col.line
+       = 'gray20', ylab = 'Perfis de Crescimento')
+
+
+
+
+```
