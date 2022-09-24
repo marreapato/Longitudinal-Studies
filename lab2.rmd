@@ -1,0 +1,24 @@
+---
+title: "Laboratorio 2"
+output: html_document
+date: "2022-09-24"
+---
+
+# 1)
+
+## A)
+
+teste
+
+```{r echo=F,message=F,warning=F}
+
+library(tidyverse)
+
+dados <- read.table("LAB2Q1.txt")
+
+medias_tempos=dados %>% group_by(day) %>% summarise(media=mean(y),desvios=sd(y))#medias e devios
+
+medias_tempos
+
+```
+
