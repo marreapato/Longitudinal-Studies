@@ -209,6 +209,8 @@ as.data.frame(cbind(fonte,soma_quadrados=round(soma_quadrados,2),F_estat=round(f
 
 ## A)
 
+A média de fosfato inorganico no plasma dos pacientes decresce até 2 horas após o consumo da glucose horal e parece voltar a crescer após este limite de tempo.
+
 ```{r echo=F,message=F,warning=F}
 
 dados2 <- read.csv("fosfato.csv")
@@ -219,13 +221,26 @@ dados2_gathe <- gather(data = dados2,key=tempo,value=fosfato,X0,X0.5,X1,X1.5,X2,
 
 dados2_gathe %>% group_by(tempo) %>% summarise(media=mean(fosfato),desvio=sd(fosfato))
 
+
+```
+
+Em relação ao baseline, a correlação decai com o passar do tempo, chegando no menor patamar as duas horas e se mantendo estável de três a cinco horas após o consumo da glucose.
+
+```{r echo=F,message=F,warning=F}
+
 dados_cor <- cor(dados2[,-c(1,2)])
 corrplot(dados_cor,method = "number")
 
 ```
 
 
+### (iii)
+
+
+
 ## B)
+
+
 
 ```{r echo=F,message=F,warning=F}
 library(lattice)
