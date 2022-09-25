@@ -160,11 +160,13 @@ summary(f.aov2)
 #d
 #install.packages("afex")
 library(afex)
-
+?aov_ez
 #aov_ez(id = (ID),dv = fosfato, data = dados2_gathe,between = dad\tempo)
 
 dados2_gathe$Grupo <- as.factor(dados2_gathe$Grupo)
 dados2_gathe$tempo <- as.factor(dados2_gathe$tempo)
 
-aov_ez("ID", "fosfato", dados2_gathe, between = "Grupo", 
-       within = c("ID", "tempo"))#maneira correta
+ver <- aov_ez("ID", "fosfato", dados2_gathe, between = "Grupo", 
+       within = c("ID", "tempo"),type = 3)#maneira correta
+
+summary(ver)
