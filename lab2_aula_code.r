@@ -138,6 +138,12 @@ dados2_gathe %>% group_by(tempo) %>% summarise(media=mean(fosfato),desvio=sd(fos
 dados_cor <- cor(dados2[,-c(1,2)])
 corrplot(dados_cor,method = "number")
 
+
+library(lattice)
+
+xyplot(fosfato~as.factor(tempo), data = dados2_gathe, type = 'l', group = ID, xlab = 'Hora', col.line
+       = 'gray20', ylab = 'Perfis de Crescimento')
+
 #b
 
 xyplot(fosfato~as.factor(tempo) | as.factor(Grupo), data = dados2_gathe, groups = ID, type = "o", panel = panel.superpose)
