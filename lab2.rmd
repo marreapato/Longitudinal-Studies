@@ -1,15 +1,50 @@
-library(tidyverse)
+---
+title: "Laboratorio 2"
+output: html_document
+date: "2022-09-24"
+---
 
+# 1)
+
+## A)
+
+### (i)
+
+As médias crescem com o tempo.
+
+```{r echo=F,message=F,warning=F}
+
+library(tidyverse)
+library(corrplot)
 dados <- read.table("LAB2Q1.txt")
 
 medias_tempos=dados %>% group_by(day) %>% summarise(media=mean(y),desvios=sd(y))#medias e devios
+
 medias_tempos
-#matriz de cor
+
+```
+
+
+### (ii)
+
+O gráfico de correlações, mostra que a correlação linear decai com o tempo, mas se mantém forte entre o baseline e o tempo final.
+
+```{r echo=F,message=F,warning=F}
+
 
 df_spread <- spread(dados,day,y)
 df_spread<- df_spread[,-c(1)]
 dados_cor <- cor(df_spread)
 corrplot(dados_cor,method = "number")
+
+```
+
+
+### (iii)
+
+O gráfico de perfis de crescimento mostra que a maioria trajetória é de crescimento dos abetos de sitka.
+
+```{r echo=F,message=F,warning=F}
 
 #grafico dos perfis de crescimento
 library(lattice)
@@ -18,6 +53,15 @@ xyplot(y~as.numeric(day), data = dados, type = 'l', group = id, xlab = 'Dia', co
        = 'gray20', ylab = 'Perfis de Crescimento')
 
 
+
+```
+
+## B)
+
+
+Programando todos os resultados para calcular a Anova para medidas repetidas teremos o seguinte código:
+
+```{r echo=T,message=F,warning=F}
 ##########################################
 #tabela anova medidas repetidas
 y_p_p=mean(dados$y)
@@ -40,12 +84,12 @@ SQt <- m*sum((medias_tempos$media-y_p_p)^2)
 #soma quadrados dos residuos (verificar)
 #SQr <- sum((dados$y-ids_media$`mean(y)`-medias_tempos$media+y_p_p)^2)
 #54 individuos
-m
+#m
 vetor_medias=NULL
 for(i in 1:m){
 vetor_medias <- append(rep(ids_media$`mean(y)`[i],5),x = vetor_medias)
 }
-vetor_medias
+#vetor_medias
 
 dados_double_sum <- dados %>% group_by(id,day) %>% cbind(media_tempos=rep(medias_tempos$media,54),ind_medias=vetor_medias)
 
@@ -66,7 +110,7 @@ QMr=SQr/((m-1)*(n-1))
 quadrados=c(QMi,QMt,QMr)
 df_res=(m-1)*(n-1)
 #total
-(m*n)-1
+#(m*n)-1
 
 dfs=c(m-1,n-1,df_res,(m*n)-1)
 
@@ -78,43 +122,77 @@ soma_quadrados=c(soma_quadrados,SQy)
 quadrados=c(quadrados,NA)
 fonte_variacao=c(fonte_variacao,"total")
 
-cbind(fonte_variacao,dfs,soma_quadrados,quadrados)
+#cbind(fonte_variacao,dfs,soma_quadrados,quadrados)
 #modificar abaixo
 #estatistica F 53,53*4
 #F INDIVIDUOS
 
 F_SNEDi=QMi/QMr
-F_SNEDi
-qf(0.05,df1 =53 ,df2 = 53*4,lower.tail = F)
+#F_SNEDi
+#qf(0.05,df1 =53 ,df2 = 53*4,lower.tail = F)
 
 #tempos
 
 F_SNEDt=QMt/QMr
-F_SNEDt
+#F_SNEDt
+#qf(0.05,df1 =4 ,df2 = 53*4,lower.tail = F)
+
+as.data.frame(cbind(fonte_variacao,dfs,soma_quadrados=round(soma_quadrados,4),quadrados=round(quadrados,2),Estat_F=c(round(F_SNEDi,4),round(F_SNEDt,4),NA,NA)))
+
+
+```
+
+
+Ao comparar o P-Valor dos indivíduos calculado com o tabelado, temos que a um nível de 5% de significância podemos rejeitar a hipótese de que os indivíduos não tem influência sobre os dados longitudinais.
+
+```{r echo=F,message=F,warning=F}
+
+qf(0.05,df1 =53 ,df2 = 53*4,lower.tail = F)
+
+```
+
+
+Ao comparar o P-Valor dos tempos calculado com o tabelado, temos evidência que a um nível de 5% de significância o tempo tem influência sobre os dados, ou seja o efeito médio do tempo é diferente para pelo menos um dos pontos no tempo.
+
+```{r echo=F,message=F,warning=F}
+
 qf(0.05,df1 =4 ,df2 = 53*4,lower.tail = F)
 
-cbind(fonte_variacao,dfs,soma_quadrados,quadrados,Estat_F=c(F_SNEDi,F_SNEDt,NA,NA))
-#n rejeita h0
+```
 
-dados.aov = aov(y~factor(day) + Error(factor(id)), data = dados)
+
+## C) 
+
+Utilizando a função ```aov``` do R, temos resultados similares, a diferença é que a função do R já disponibiliza o P-valor e não disponibiliza o fator de variação para os resíduos nem para o total.
+
+```{r echo=F,message=F,warning=F}
+
 dados.aov = aov(y~factor(day) + (factor(id)), data = dados)
 summary(dados.aov)
 
-#d)
+```
+
+
+## D)
+
+A decomposição indica que os componentes quadrático e linear são significantes a um nível de 5%. Ou analizando conjuntamente, há uma tendência positiva no na desaceleração do crescimento (a medida que o tempo passa a planta passa a crescer mais vagarosamente).
+
+
+```{r echo=F,message=F,warning=F}
 
 y.v = df_spread
 
 rfactor = factor(c("t1","t2","t3","t4","t5"))
 
 C = contr.poly(5)
-?contr.poly
+#?contr.poly
 num.est=m*((t(colMeans(y.v))%*%C))*(t(colMeans(y.v))%*%(C))
 
 den.est=QMr
 F_sned=num.est/den.est
 
 pcomp1 = 1-pf(F_sned[1], 1, df_res)
-pcomp1
+#pcomp1
 
 fonte=c("linear","quadratico")
 gl=c(1,1)
@@ -123,9 +201,17 @@ f_estatis=c(F_sned[1],F_sned[2])
 p_val=c(1-pf(F_sned[1], 1, df_res),1-pf(F_sned[2], 1, df_res))
 
 as.data.frame(cbind(fonte,soma_quadrados=round(soma_quadrados,2),F_estat=round(f_estatis,4),P_val=round(p_val,4)))
-######
 
-#2)
+
+```
+
+# 2)
+
+## A)
+
+A média de fosfato inorganico no plasma dos pacientes decresce até 2 horas após o consumo da glucose horal e parece voltar a crescer após este limite de tempo.
+
+```{r echo=F,message=F,warning=F}
 
 dados2 <- read.csv("fosfato.csv")
 
@@ -135,29 +221,73 @@ dados2_gathe <- gather(data = dados2,key=tempo,value=fosfato,X0,X0.5,X1,X1.5,X2,
 
 dados2_gathe %>% group_by(tempo) %>% summarise(media=mean(fosfato),desvio=sd(fosfato))
 
+
+```
+
+Em relação ao baseline, a correlação decai com o passar do tempo, chegando no menor patamar as duas horas e se mantendo estável de três a cinco horas após o consumo da glucose.
+
+```{r echo=F,message=F,warning=F}
+
 dados_cor <- cor(dados2[,-c(1,2)])
 corrplot(dados_cor,method = "number")
 
+```
 
-library(lattice)
+
+### (iii)
+
+O gráfico de perfis de crescimento mostra que no geral parece haver uma diminuição do fosfato no plasma, no entanto o crescimento retorna após 2 horas do consumo da glucose.
+
+```{r echo=F,message=F,warning=F}
+
 
 xyplot(fosfato~as.factor(tempo), data = dados2_gathe, type = 'l', group = ID, xlab = 'Hora', col.line
        = 'gray20', ylab = 'Perfis de Crescimento')
 
-#b
+
+```
+
+## B)
+
+Nos dois grupos o gráfico de perfis de crescimento mostra que parece haver uma diminuição do fosfato no plasma, no entanto o crescimento retorna após 2 horas do consumo da glucose. No entanto o grupo dois parece iniciar com mais fosfato no plasma que o grupo 1.
+
+
+```{r echo=F,message=F,warning=F}
+library(lattice)
 
 xyplot(fosfato~as.factor(tempo) | as.factor(Grupo), data = dados2_gathe, groups = ID, type = "o", panel = panel.superpose)
 
 
+
+```
+
+De fato o nível médio de fosfato no plasma para o grupo dois é maior no baseline para o grupo 2, no entanto no grupo 1 há um decrescimento médio até 1 hora e meia, enquanto no grupo 2 o decrescimento médio ocorre duas horas após o consumo da glucose.
+
+```{r echo=F,message=F,warning=F}
 with(dados2_gathe, interaction.plot(tempo, Grupo, fosfato, ylim = c(2, 5), lty = c(1, 2), lwd = 3, ylab = "media de
                          fosfato", xlab = "tempo", trace.label = "Grupo"))
 
-#c
+
+```
+
+## C)
+
+Temos evidência a um nível de 5% de significância para afirmar que há interação entre o grupo e o tempo. (Aoesar de já possuir o efeito de interação didaticamente podemos interpretar também que há um nível de 5% de significância temos evidência para afirmar que pelo menos um dos tempos tem um efeito médio diferente e não temos evidência para afirmar que os grupos são diferentes entre si)
+
+```{r echo=F,message=F,warning=F}
 
 f.aov2 = aov(fosfato~Grupo*tempo + Error(ID), data = dados2_gathe)
 summary(f.aov2)
 
-#d
+
+```
+
+## D)
+
+O teste de esfericidade de Mauchly foi rejeitado a um nível de 5% de significância, ou seja os testes F realizados não foram válidos.
+
+```{r echo=F,message=F,warning=F}
+
 #install.packages("afex")
 library(afex)
 
@@ -166,5 +296,8 @@ library(afex)
 dados2_gathe$Grupo <- as.factor(dados2_gathe$Grupo)
 dados2_gathe$tempo <- as.factor(dados2_gathe$tempo)
 
-aov_ez("ID", "fosfato", dados2_gathe, between = "ID", 
-       within = c("ID", "tempo"),type = 3)#maneira correta
+ver <- aov_ez("ID", "fosfato", dados2_gathe, between = "Grupo", 
+       within = c("ID", "tempo"))#maneira correta
+
+summary(ver)
+```
