@@ -236,10 +236,20 @@ corrplot(dados_cor,method = "number")
 
 ### (iii)
 
+O gráfico de perfis de crescimento mostra que no geral parece haver uma diminuição do fosfato no plasma, no entanto o crescimento retorna após 2 horas do consumo da glucose.
 
+```{r echo=F,message=F,warning=F}
+
+
+xyplot(fosfato~as.factor(tempo), data = dados2_gathe, type = 'l', group = ID, xlab = 'Hora', col.line
+       = 'gray20', ylab = 'Perfis de Crescimento')
+
+
+```
 
 ## B)
 
+Nos dois grupos o gráfico de perfis de crescimento mostra que parece haver uma diminuição do fosfato no plasma, no entanto o crescimento retorna após 2 horas do consumo da glucose. No entanto o grupo dois parece iniciar com mais fosfato no plasma que o grupo 1.
 
 
 ```{r echo=F,message=F,warning=F}
@@ -248,14 +258,21 @@ library(lattice)
 xyplot(fosfato~as.factor(tempo) | as.factor(Grupo), data = dados2_gathe, groups = ID, type = "o", panel = panel.superpose)
 
 
+
+```
+
+De fato o nível médio de fosfato no plasma para o grupo dois é maior no baseline para o grupo 2, no entanto no grupo 1 há um decrescimento médio até 1 hora e meia, enquanto no grupo 2 o decrescimento médio ocorre duas horas após o consumo da glucose.
+
+```{r echo=F,message=F,warning=F}
 with(dados2_gathe, interaction.plot(tempo, Grupo, fosfato, ylim = c(2, 5), lty = c(1, 2), lwd = 3, ylab = "media de
                          fosfato", xlab = "tempo", trace.label = "Grupo"))
 
 
 ```
 
-
 ## C)
+
+
 
 ```{r echo=F,message=F,warning=F}
 
