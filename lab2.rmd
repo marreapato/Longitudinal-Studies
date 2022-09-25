@@ -175,7 +175,8 @@ summary(dados.aov)
 
 ## D)
 
-A decomposição indica que os componentes quadrático e linear são significantes a um nível de 5%.
+A decomposição indica que os componentes quadrático e linear são significantes a um nível de 5%. Ou analizando conjuntamente, há uma tendência positiva no na desaceleração do crescimento (a medida que o tempo passa a planta passa a crescer mais vagarosamente).
+
 
 ```{r echo=F,message=F,warning=F}
 
