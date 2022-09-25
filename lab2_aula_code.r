@@ -3,7 +3,7 @@ library(tidyverse)
 dados <- read.table("LAB2Q1.txt")
 
 medias_tempos=dados %>% group_by(day) %>% summarise(media=mean(y),desvios=sd(y))#medias e devios
-media_tempos
+medias_tempos
 #matriz de cor
 
 df_spread <- spread(dados,day,y)
@@ -107,7 +107,7 @@ y.v = df_spread
 rfactor = factor(c("t1","t2","t3","t4","t5"))
 
 C = contr.poly(5)
-
+?contr.poly
 num.est=m*((t(colMeans(y.v))%*%C))*(t(colMeans(y.v))%*%(C))
 
 den.est=QMr
@@ -116,6 +116,13 @@ F_sned=num.est/den.est
 pcomp1 = 1-pf(F_sned[1], 1, df_res)
 pcomp1
 
+fonte=c("linear","quadratico")
+gl=c(1,1)
+soma_quadrados=c(num.est[1],num.est[2])
+f_estatis=c(F_sned[1],F_sned[2])
+p_val=c(1-pf(F_sned[1], 1, df_res),1-pf(F_sned[2], 1, df_res))
+
+as.data.frame(cbind(fonte,soma_quadrados=round(soma_quadrados,2),F_estat=round(f_estatis,4),P_val=round(p_val,4)))
 ######
 
 #2)
