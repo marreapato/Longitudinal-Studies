@@ -58,7 +58,10 @@ xyplot(y~as.numeric(day), data = dados, type = 'l', group = id, xlab = 'Dia', co
 
 ## B)
 
-```{r echo=F,message=F,warning=F}
+
+Programando todos os resultados para calcular a Anova para medidas repetidas teremos o seguinte código:
+
+```{r echo=T,message=F,warning=F}
 ##########################################
 #tabela anova medidas repetidas
 y_p_p=mean(dados$y)
@@ -140,11 +143,16 @@ as.data.frame(cbind(fonte_variacao,dfs,soma_quadrados=round(soma_quadrados,4),qu
 ```
 
 
+Ao comparar o P-Valor dos indivíduos calculado com o tabelado, temos que a um nível de 5% de significância podemos rejeitar a hipótese de que os indivíduos não tem influência sobre os dados longitudinais.
+
 ```{r echo=F,message=F,warning=F}
 
 qf(0.05,df1 =53 ,df2 = 53*4,lower.tail = F)
 
 ```
+
+
+Ao comparar o P-Valor dos tempos calculado com o tabelado, temos evidência que a um nível de 5% de significância o tempo tem influência sobre os dados, ou seja o efeito médio do tempo é diferente para pelo menos um dos pontos no tempo.
 
 ```{r echo=F,message=F,warning=F}
 
@@ -154,6 +162,8 @@ qf(0.05,df1 =4 ,df2 = 53*4,lower.tail = F)
 
 
 ## C) 
+
+Utilizando a função ```aov``` do R, temos resultados similares, a diferença é que a função do R já disponibiliza o P-valor e não disponibiliza o fator de variação para os resíduos nem para o total.
 
 ```{r echo=F,message=F,warning=F}
 
