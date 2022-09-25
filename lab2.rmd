@@ -272,7 +272,7 @@ with(dados2_gathe, interaction.plot(tempo, Grupo, fosfato, ylim = c(2, 5), lty =
 
 ## C)
 
-
+Temos evidência a um nível de 5% de significância para afirmar que há interação entre o grupo e o tempo. (Aoesar de já possuir o efeito de interação didaticamente podemos interpretar também que há um nível de 5% de significância temos evidência para afirmar que pelo menos um dos tempos tem um efeito médio diferente e não temos evidência para afirmar que os grupos são diferentes entre si)
 
 ```{r echo=F,message=F,warning=F}
 
