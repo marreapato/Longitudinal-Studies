@@ -10,7 +10,7 @@ date: "2022-09-24"
 
 ### (i)
 
-teste
+As médias crescem com o tempo.
 
 ```{r echo=F,message=F,warning=F}
 
@@ -27,6 +27,7 @@ medias_tempos
 
 ### (ii)
 
+O gráfico de correlações, mostra que a correlação linear decai com o tempo, mas se mantém forte entre o baseline e o tempo final.
 
 ```{r echo=F,message=F,warning=F}
 
@@ -41,6 +42,21 @@ corrplot(dados_cor,method = "number")
 
 ### (iii)
 
+O gráfico de perfis de crescimento mostra que a maioria trajetória é de crescimento dos abetos de sitka.
+
+```{r echo=F,message=F,warning=F}
+
+#grafico dos perfis de crescimento
+library(lattice)
+
+xyplot(y~as.numeric(day), data = dados, type = 'l', group = id, xlab = 'Dia', col.line
+       = 'gray20', ylab = 'Perfis de Crescimento')
+
+
+
+```
+
+## B)
 
 ```{r echo=F,message=F,warning=F}
 ##########################################
