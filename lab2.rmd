@@ -184,14 +184,14 @@ y.v = df_spread
 rfactor = factor(c("t1","t2","t3","t4","t5"))
 
 C = contr.poly(5)
-?contr.poly
+#?contr.poly
 num.est=m*((t(colMeans(y.v))%*%C))*(t(colMeans(y.v))%*%(C))
 
 den.est=QMr
 F_sned=num.est/den.est
 
 pcomp1 = 1-pf(F_sned[1], 1, df_res)
-pcomp1
+#pcomp1
 
 fonte=c("linear","quadratico")
 gl=c(1,1)
