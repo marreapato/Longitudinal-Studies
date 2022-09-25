@@ -3,7 +3,7 @@ library(tidyverse)
 dados <- read.table("LAB2Q1.txt")
 
 medias_tempos=dados %>% group_by(day) %>% summarise(media=mean(y),desvios=sd(y))#medias e devios
-
+media_tempos
 #matriz de cor
 
 df_spread <- spread(dados,day,y)
@@ -18,11 +18,11 @@ xyplot(y~as.numeric(day), data = dados, type = 'l', group = id, xlab = 'Dia', co
        = 'gray20', ylab = 'Perfis de Crescimento')
 
 
+##########################################
 #tabela anova medidas repetidas
-
-
 y_p_p=mean(dados$y)
 
+fonte_variacao=c("Individuos","Tempo","Residuo")
 
 #soma dos quadrados individuos
 #4 pontos no tempo
@@ -38,7 +38,7 @@ SQi <- n*sum((ids_media$`mean(y)`-y_p_p)^2)
 SQt <- m*sum((medias_tempos$media-y_p_p)^2)
 
 #soma quadrados dos residuos (verificar)
-SQr <- sum((dados$y-ids_media$`mean(y)`-medias_tempos$media+y_p_p)^2)
+#SQr <- sum((dados$y-ids_media$`mean(y)`-medias_tempos$media+y_p_p)^2)
 #54 individuos
 m
 vetor_medias=NULL
@@ -51,6 +51,8 @@ dados_double_sum <- dados %>% group_by(id,day) %>% cbind(media_tempos=rep(medias
 
 SQr <- sum((dados_double_sum$y-dados_double_sum$ind_medias-dados_double_sum$media_tempos+y_p_p)^2)
 
+soma_quadrados=c(SQi,SQt,SQr)
+
 #QUADRADO MEDIO ENTRE
 
 QMi=SQi/(m-1)
@@ -61,27 +63,37 @@ QMt=SQt/(n-1)
 #QUADRADO MEDIO RES
 
 QMr=SQr/((m-1)*(n-1))
+quadrados=c(QMi,QMt,QMr)
 df_res=(m-1)*(n-1)
 #total
 (m*n)-1
+
+dfs=c(m-1,n-1,df_res,(m*n)-1)
 
 #SQy
 
 SQy <- sum((dados$y-y_p_p)^2)
 
+soma_quadrados=c(soma_quadrados,SQy)
+quadrados=c(quadrados,NA)
+fonte_variacao=c(fonte_variacao,"total")
+
+cbind(fonte_variacao,dfs,soma_quadrados,quadrados)
 #modificar abaixo
 #estatistica F 53,53*4
 #F INDIVIDUOS
 
-F_SNED=QMi/QMr
-F_SNED
+F_SNEDi=QMi/QMr
+F_SNEDi
 qf(0.05,df1 =53 ,df2 = 53*4,lower.tail = F)
 
 #tempos
 
-F_SNED=QMt/QMr
-F_SNED
+F_SNEDt=QMt/QMr
+F_SNEDt
 qf(0.05,df1 =4 ,df2 = 53*4,lower.tail = F)
+
+cbind(fonte_variacao,dfs,soma_quadrados,quadrados,Estat_F=c(F_SNEDi,F_SNEDt,NA,NA))
 #n rejeita h0
 
 dados.aov = aov(y~factor(day) + Error(factor(id)), data = dados)
