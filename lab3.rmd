@@ -52,6 +52,7 @@ sumario_manova=summary(Anova(arv.mod, idata=idata, idesign=~tempo, type="III"))
 
 ## B)
 
+Para o teste de Mauchly temos evidência a um nível de 5% de significância para rejeitar a hípotese de esfericidade, isso implica que não será possível usar testes univariados (ANOVA) para a avaliação de tendências (linear, quadratica, cubica, etc).
 
 ```{r echo=F,message=F,warning=F}
 
