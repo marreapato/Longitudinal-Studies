@@ -65,5 +65,54 @@ sumario_manova$sphericity.tests
 
 ```{r echo=F,message=F,warning=F}
 
-sumario_manova$sphericity.tests
+print("fazendo")
+```
+
+
+
+# 2)
+
+## A)
+
+
+Abaixo estão disponíveis os resultados para todas as estatísticas de teste, onde há evidência a um nível de 5% de significância para se afirmar que existe efeito de interação entre o grupo (obesos e controle) e a quantidade mensurada de fosfato no plasma.
+
+```{r echo=F,message=F,warning=F}
+
+
+
+dados2 <- read.csv("fosfato.csv")
+
+dados <- dados2
+
+
+arv.mod = lm(cbind(dados$X0, dados$X0.5, dados$X1, dados$X1.5, dados$X2, dados$X3, dados$X4, dados$X5) ~ Grupo, data=dados)
+
+idata = data.frame(tempo=ordered(1:8))
+
+library(car)
+ajuste=Anova(arv.mod, idata=idata, idesign=~tempo, type='III')
+
+ajuste
+
+ajuste2=Anova(arv.mod, idata=idata, idesign=~tempo, type='III',test.statistic = "Wilks")
+
+ajuste2
+
+ajuste3=Anova(arv.mod, idata=idata, idesign=~tempo, type='III',test.statistic = "Roy")
+
+ajuste3
+
+ajuste4=Anova(arv.mod, idata=idata, idesign=~tempo, type='III',test.statistic = "Hotelling-Lawley")
+
+ajuste4
+```
+
+
+## B)
+
+```{r echo=F,message=F,warning=F}
+
+
+print("depois")
 ```
