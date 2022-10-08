@@ -1,0 +1,68 @@
+---
+title: "Laboratorio 3"
+output: html_document
+---
+
+# 1)
+
+## A)
+
+Utilizando do ajuste padrão da Manova ara medidas positivas no R,a estatística utilizada é a estatística teste de Pillai, onde há evidência a um nível de 5% de significância para se afirmar que existe efeito do tempo no crescimento das plantas, ou seja, o crescimento médio de pelo menos um dos pontos do tempo é diferente.
+
+```{r echo=F,message=F,warning=F}
+library(tidyverse)
+
+dados1 <- read.table("LAB2Q1.txt")
+
+dados <- spread(dados1,day,y)
+
+arv.mod = lm(cbind(dados$`152`, dados$`174`, dados$`201`, dados$`227`, dados$`258`) ~ 1, data=dados)
+
+idata = data.frame(tempo=ordered(1:5))
+
+library(car)
+ajuste=Anova(arv.mod, idata=idata, idesign=~tempo, type='III')
+
+ajuste
+
+```
+
+Abaixo estão disponíveis os resultados das outras estatísticas de teste, onde há evidência a um nível de 5% de significância para se afirmar que existe efeito do tempo no crescimento das plantas, ou seja, o crescimento médio de pelo menos um dos pontos do tempo é diferente.
+
+```{r echo=F,message=F,warning=F}
+ajuste
+
+ajuste2=Anova(arv.mod, idata=idata, idesign=~tempo, type='III',test.statistic = "Wilks")
+
+ajuste2
+
+ajuste3=Anova(arv.mod, idata=idata, idesign=~tempo, type='III',test.statistic = "Roy")
+
+ajuste3
+
+ajuste4=Anova(arv.mod, idata=idata, idesign=~tempo, type='III',test.statistic = "Hotelling-Lawley")
+
+ajuste4
+sumario_manova=summary(Anova(arv.mod, idata=idata, idesign=~tempo, type="III"))
+
+
+
+```
+
+
+## B)
+
+
+```{r echo=F,message=F,warning=F}
+
+sumario_manova$sphericity.tests
+```
+
+
+## C)
+
+
+```{r echo=F,message=F,warning=F}
+
+sumario_manova$sphericity.tests
+```
