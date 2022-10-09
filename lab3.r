@@ -85,6 +85,9 @@ dados2 <- read.csv("fosfato.csv")
 
 dados <- dados2
 
+g=n_distinct(dados2$Grupo)
+
+m=n_distinct(dados2$ID)
 
 arv.mod = lm(cbind(dados$X0, dados$X0.5, dados$X1, dados$X1.5, dados$X2, dados$X3, dados$X4, dados$X5) ~ Grupo, data=dados)
 
@@ -108,6 +111,17 @@ ajuste4=Anova(arv.mod, idata=idata, idesign=~tempo, type='III',test.statistic = 
 ajuste4
 
 
-summary(Anova(arv.mod, idata=idata, idesign=~tempo, type="III"))
-
 ajuste$P
+
+ajuste
+
+sumario_manova=summary(ajuste)
+
+
+
+
+tempo_ssp <- diag(ajuste$SSP$`Grupo:tempo`)
+
+tempo_sspe <- diag(ajuste$SSPE$`Grupo:tempo`)
+
+tempo_ssp/(tempo_sspe/(m-g))
