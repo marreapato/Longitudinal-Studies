@@ -143,6 +143,9 @@ Abaixo estão disponíveis os resultados para todas as estatísticas de teste, o
 dados2 <- read.csv("fosfato.csv")
 
 dados <- dados2
+g=n_distinct(dados2$Grupo)
+
+m=n_distinct(dados2$ID)
 
 
 arv.mod = lm(cbind(dados$X0, dados$X0.5, dados$X1, dados$X1.5, dados$X2, dados$X3, dados$X4, dados$X5) ~ Grupo, data=dados)
@@ -170,8 +173,17 @@ ajuste4
 
 ## B)
 
-```{r echo=F,message=F,warning=F}
+As estatísticas de teste para avaliar os efeitos no tempo podem podem ser conseguidas por meio do ajuste do modelo MANOVA, o ajuste do modelo no R disponibiliza a soma de quadrados dos polinômios e dos resíduos, as estatísticas de teste para o efeito de interação são definidas por meio da saída após o código abaixo:
+
+```{r echo=T,message=F,warning=F}
+
+sumario_manova=summary(ajuste)
 
 
-print("depois")
+tempo_ssp <- diag(ajuste$SSP$`Grupo:tempo`)
+
+tempo_sspe <- diag(ajuste$SSPE$`Grupo:tempo`)
+
+tempo_ssp/(tempo_sspe/(m-g))
+
 ```
