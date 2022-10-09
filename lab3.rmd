@@ -126,7 +126,7 @@ round(pf(ssp_diag/qmrs,1,m-1,lower.tail = F),4)
 
 ```
 
-
+A um nível de 5% de significância a decomposição polinomial para o efeito do tempo na série, é claramente significante para os termos linear, quadrático e cúbico, avaliando conjuntamente os resultados indicam uma tendência positiva de desaceleração entre séries, ou seja temos evidência de que o crescimento das plantas desacelera ao decorrer do tempo.
 
 
 # 2)
