@@ -173,7 +173,7 @@ ajuste4
 
 ## B)
 
-As estatísticas de teste para avaliar os efeitos no tempo podem podem ser conseguidas por meio do ajuste do modelo MANOVA, o ajuste do modelo no R disponibiliza a soma de quadrados dos polinômios e dos resíduos, as estatísticas de teste para o efeito de interação são definidas por meio da saída após o código abaixo:
+As estatísticas de teste para avaliar os efeitos no tempo (Linear, Quadrático e Cúbico) podem podem ser conseguidas por meio do ajuste do modelo MANOVA, o ajuste do modelo no R disponibiliza a soma de quadrados dos polinômios e dos resíduos, as estatísticas de teste para o efeito de interação são definidas por meio da saída após o código abaixo:
 
 ```{r echo=T,message=F,warning=F}
 
@@ -184,6 +184,8 @@ tempo_ssp <- diag(ajuste$SSP$`Grupo:tempo`)
 
 tempo_sspe <- diag(ajuste$SSPE$`Grupo:tempo`)
 
-tempo_ssp/(tempo_sspe/(m-g))
+estaist <- tempo_ssp/(tempo_sspe/(m-g))
+
+estaist[1:4]
 
 ```
