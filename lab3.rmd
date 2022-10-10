@@ -189,3 +189,14 @@ estaist <- tempo_ssp/(tempo_sspe/(m-g))
 estaist[1:4]
 
 ```
+
+Os valores de P, para cada uma das tendências foi:
+
+```{r echo=T,message=F,warning=F}
+
+round(pf(estaist[1:4],1,m-g,lower.tail = F),4)
+
+```
+
+
+A um nível de 5% de significância a decomposição polinomial para o efeito de interação entre o grupo e o tempo na série, é claramente significante para os termos linear, quadrático e cúbico, avaliando conjuntamente os resultados indicam uma tendência positiva de desaceleração entre séries.
