@@ -1,0 +1,170 @@
+---
+title: "Laboratorio 4"
+output: html_document
+---
+
+# 1)
+
+## A)
+
+A reta de Regressão mostra um decaimento no nível de açucar no sangue de acordo com o tempo.
+
+```{r echo=F,message=F,warning=F}
+library(tidyverse)
+library(lmtest)
+library(lme4)
+library(nlme)
+library(lattice)
+#install.packages("lmtest")
+
+dados <- read.table("insulin.dat",header = F)
+
+colnames(dados) <- c("id","tempo","nas","grupo")
+
+ggplot(dados,aes(x=dados$tempo, y=dados$nas)) +geom_jitter() + 
+  geom_smooth(method='lm', formula= y~x)+labs(x="Tempo",y="Nível de Açucar no Sangue")
+```
+
+Os resíduos do modelo seguem de acordo com os quantis da distribuição normal, além disso existem alguns pontos discrepantes que podem ser investigados (como o 70).
+
+```{r echo=T,message=F,warning=F}
+
+
+fit <- lm(dados$nas~dados$tempo)#modelo
+par(mfrow=c(2,2))
+plot(fit)
+par(mfrow=c(1,1))
+
+```
+
+Segundo o teste de Breusch Pagan não temos evidência o suficiente ao nível de 5% de significância para afirmar que os resíduos não são homocedasticos. Para o teste de Shapiro Wilk não temos evidência o suficiente ao nível de 5% de significância para afirmar que os resíduos não segue uma distribuição normal.
+
+```{r echo=F,message=F,warning=F}
+bptest(fit)#ssem heterodasticide
+shapiro.test(fit$residuals)#com normalidade
+```
+
+Analisados os pressupostos do modelo, podemos então interpretar a Anova, onde podemos afirmar que existe um efeito decrescente do tempo sobre o nível de açucar no Sangue.
+
+```{r echo=F,message=F,warning=F}
+summary(fit)
+```
+
+
+## b)
+
+
+```{r echo=F,message=F,warning=F}
+mod2 = lmer(nas ~ tempo + (1|id), data = dados)
+summary(mod2)
+
+
+
+```
+
+```{r echo=F,message=F,warning=F}
+source("icc(1).R")
+icc(mod2)
+```
+
+
+## c)
+
+```{r echo=F,message=F,warning=F}
+
+
+(teststat <- -2*(logLik(fit, REML=FALSE)-logLik(mod2, REML=FALSE)))
+
+
+(p.val <- pchisq(teststat, df = 1, lower.tail = FALSE))
+
+```
+
+
+
+## d)
+
+
+```{r echo=F,message=F,warning=F}
+
+
+pred.mod2 = fitted(mod2)
+
+datapred.mod2 = unique(data.frame(cbind(pred.mod2 = pred.mod2, tempo = dados$tempo,
+                                        id = dados$id)))
+
+xyplot(pred.mod2 ~ tempo, data = datapred.mod2, groups = id, type = c("p", "l"), col =rainbow(252,alpha=0.5,))
+
+```
+
+
+
+## e)
+
+
+```{r echo=T,message=F,warning=F}
+
+mod3 = lmer(nas~tempo + (tempo|id), data = dados)
+summary(mod3)
+
+```
+
+
+
+## f)
+
+
+```{r echo=F,message=F,warning=F}
+
+pred.mod2 = fitted(mod3)
+
+datapred.mod2 = unique(data.frame(cbind(pred.mod2 = pred.mod2, tempo = dados$tempo,
+                                        id = dados$id)))
+
+xyplot(pred.mod2 ~ tempo, data = datapred.mod2, groups = id, type = c("p", "l"), col =
+         "blue")
+
+```
+
+
+
+## g)
+
+
+```{r echo=T,message=F,warning=F}
+
+anova(mod2, mod3)
+
+(teststat <- -2*(logLik(mod2, REML=FALSE)-logLik(mod3, REML=FALSE)))
+
+(p.val <- pchisq(teststat, df = 2, lower.tail = FALSE))
+
+```
+
+
+
+## h)
+
+
+```{r echo=F,message=F,warning=F}
+hist(resid(mod2),main="Modelo com interceptos aleatórios")
+hist(resid(mod3),main="Modelo com slopes e interceptos aleatórios")
+```
+
+
+```{r echo=T,message=F,warning=F}
+shapiro.test(resid(mod2))
+
+shapiro.test(resid(mod3))
+```
+
+
+## i)
+
+```{r echo=T,message=F,warning=F}
+mod3 = lmer(nas~tempo + (tempo|id)+grupo+grupo*tempo, data = dados)
+
+summary(mod3)
+
+anova(mod3)
+```
