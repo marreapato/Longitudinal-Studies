@@ -53,12 +53,22 @@ summary(fit)
 
 ## b)
 
-O modelo de interceptos aleatórios para avaliar o nível de açucar no sangue dos indivíduos é dados por $NAS_{ij}=\beta_0+u_{0i}+$
+O modelo de interceptos aleatórios para avaliar o nível médio de açucar no sangue dos indivíduos é dados por $Media\_NAS_{ij}=\beta_0+u_{0i}+\beta_1t_ij+\epsilon_{ij}$, onde $\beta_0=98,453$, $\beta_1=-16,088$, sendo $u_{0i}$ o desvio do intercepto para o indivíduo $i$. 
 
 ```{r echo=F,message=F,warning=F}
 mod2 = lmer(nas ~ tempo + (1|id), data = dados)
 summary(mod2)
+
 ```
+
+O $u_{0i}$ de cada um dos indivíduos é dado por: 
+
+```{r echo=F,message=F,warning=F}
+mod2@u
+```
+
+
+O ICC é de 14,72%, ou seja 14,72% da variância é atríbuida aos indivíduos, por meio do grau de dependência entre suas medidas repetidas.
 
 ```{r echo=F,message=F,warning=F}
 source("icc(1).R")
@@ -68,7 +78,9 @@ icc(mod2)
 
 ## c)
 
-```{r echo=F,message=F,warning=F}
+Utilizando o teste de razão de verossimilhanças, com 1 grau de liberdade, sendo o modelo de interceptos aleatórios considerado o modelo complexo, temos evidência a um nível de 5% de significância para rejeitar a hipótese nula de que o modelo aninhado (nested) deve ser usado, ou seja, devemos optar pelo uso do modelo complexo (o de interceptos aleatórios).
+
+```{r echo=T,message=F,warning=F}
 
 
 (teststat <- -2*(logLik(fit, REML=FALSE)-logLik(mod2, REML=FALSE)))
@@ -82,6 +94,7 @@ icc(mod2)
 
 ## d)
 
+Como o gráfico considera apenas os interceptos aleatórios, os indivíduos iniciam em baselines diferentes, no entanto a trajetória é a mesma (de queda), para todos os indivíduos.
 
 ```{r echo=F,message=F,warning=F}
 
