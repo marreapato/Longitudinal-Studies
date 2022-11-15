@@ -53,13 +53,11 @@ summary(fit)
 
 ## b)
 
+O modelo de interceptos aleatórios para avaliar o nível de açucar no sangue dos indivíduos é dados por $NAS_{ij}=\beta_0+u_{0i}+$
 
 ```{r echo=F,message=F,warning=F}
 mod2 = lmer(nas ~ tempo + (1|id), data = dados)
 summary(mod2)
-
-
-
 ```
 
 ```{r echo=F,message=F,warning=F}
