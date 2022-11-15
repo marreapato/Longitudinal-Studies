@@ -113,6 +113,8 @@ xyplot(pred.mod2 ~ tempo, data = datapred.mod2, groups = id, type = c("p", "l"),
 ## e)
 
 
+O modelo de interceptos e slopes aleatórios para avaliar o nível médio de açucar no sangue dos indivíduos é dados por $Media\_NAS_{ij}=\beta_0+u_{0i}+(\beta_1+u_{1i})t_{ij}+\epsilon_{ij}$, onde $\beta_0=98,453$, $\beta_1=-16,088$, sendo $u_{0i}$ o desvio do intercepto para o indivíduo $i$ e $u_{1i}$ o slope do $i$-ésimo indivíduo. 
+
 ```{r echo=T,message=F,warning=F}
 
 mod3 = lmer(nas~tempo + (tempo|id), data = dados)
@@ -124,6 +126,7 @@ summary(mod3)
 
 ## f)
 
+O modelo possui o comportamento esperado, onde existem inclinações diferentes da reta.
 
 ```{r echo=F,message=F,warning=F}
 
@@ -141,6 +144,7 @@ xyplot(pred.mod2 ~ tempo, data = datapred.mod2, groups = id, type = c("p", "l"),
 
 ## g)
 
+O modelo com menores AIC e BIC, é o modelo com interceptos e slopes aleatórios. Utilizando o teste da razão de verossimilhança com 2 graus de liberdade (6 do modelo complexo e 4 do aninhado), considerando o modelo de interceptos e slopes aleatórios como o modelo complexo, temos evidência a um nível de 5% de significância para afirmar que este modelo é o melhor.
 
 ```{r echo=T,message=F,warning=F}
 
@@ -156,12 +160,15 @@ anova(mod2, mod3)
 
 ## h)
 
+Analizando pelo histograma os dois modelos parecem ter um comportamento parecido referente normalidade dos resíduos, realizando uma análise a sentimento, como os histogramas parecem ter um formato de sino, os resíduos parecem ser normais.
 
 ```{r echo=F,message=F,warning=F}
 hist(resid(mod2),main="Modelo com interceptos aleatórios")
 hist(resid(mod3),main="Modelo com slopes e interceptos aleatórios")
 ```
 
+
+Realizando o teste de shapiro wilk, não temos evidência para rejeitar a um nível de 5% de significância a hipótese de normalidade nos resíduos para nenhum dos modelos, no entanto o fato do valor de P para o modelo com interceptos aleatórios (sem slope aleatório) estar muito próximo de 5% merece atenção e deve ser tomado com cautela.
 
 ```{r echo=T,message=F,warning=F}
 shapiro.test(resid(mod2))
@@ -171,6 +178,7 @@ shapiro.test(resid(mod3))
 
 
 ## i)
+
 
 ```{r echo=T,message=F,warning=F}
 mod3 = lmer(nas~tempo + (tempo|id)+grupo+grupo*tempo, data = dados)
