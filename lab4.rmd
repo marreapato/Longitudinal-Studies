@@ -179,11 +179,12 @@ shapiro.test(resid(mod3))
 
 ## i)
 
+Acrescentando o efeito do grupo do modelo, temos evidência a um nível de 5% de significância para afirmar que o grupo tem efeito sobre o nível médio de açucar no sangue. Ou seja temos evidência a um nível de 5% de significância para afirmar que a diminuição de protamina na mistura da insulina de 1% ou 5% faz diferença no nível médio de açucar no sangue dos coelhos em relação a mistura padrão, sendo esse efeito negativo em relação a mistura padrão, portanto interessante para diminuição do nível de açucar no sangue.
+
 
 ```{r echo=T,message=F,warning=F}
-mod3 = lmer(nas~tempo + (tempo|id)+grupo+grupo*tempo, data = dados)
-
+mod3 = lmer(nas~tempo +factor(grupo)+ (tempo|id), data = dados)
 summary(mod3)
-
 anova(mod3)
 ```
+
