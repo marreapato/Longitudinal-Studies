@@ -1,0 +1,118 @@
+---
+title: "Laboratorio 5"
+output: html_document
+---
+
+
+```{r echo=F,message=F,warning=F}
+
+library(tidyverse)
+library(lmtest)
+library(lme4)
+library(nlme)
+library(MASS)
+#install.packages("lmtest")
+dados <- read.table("dogs.txt",header=T)
+library(glmtoolbox)
+
+```
+
+# 1)
+
+```{r echo=T,message=F,warning=F}
+
+fit = glm(score ~ week+lateral+typsurg+age, data = dados,
+            family=binomial("logit"))
+summary(fit)
+
+```
+
+
+```{r echo=F,message=F,warning=F}
+
+set.seed(5)
+envelope(fit)
+
+
+```
+
+
+```{r echo=F,message=F,warning=F}
+
+exp(summary(fit)$coefficients[,1])
+
+```
+
+
+```{r echo=T,message=F,warning=F}
+#score seria 0
+predict(fit,data.frame(lateral="b",typsurg=2,age=2,
+                       week=1), type = "response")#previsao
+
+```
+
+
+# 2)
+
+
+```{r echo=T,message=F,warning=F}
+mod = glmer(score ~ week+lateral+typsurg+age + (1 | dog), data = dados,
+            family=binomial("logit"))
+summary(mod)
+
+```
+
+
+```{r echo=T,message=F,warning=F}
+
+tau2 = as.numeric(data.frame(VarCorr(mod))["vcov"])
+
+tau2/(tau2+(pi^2)/3)#icc
+
+```
+
+
+# 3)
+
+modelo 2
+
+# 4)
+
+
+
+```{r echo=T,message=F,warning=F}
+
+
+#checar
+exp(summary(mod)$coefficients[,1])+1.96*tau2
+exp(summary(mod)$coefficients[,1])
+exp(summary(mod)$coefficients[,1])+1.96-tau2
+
+```
+
+
+# 5)
+
+## a)
+
+```{r echo=T,message=F,warning=F}
+
+
+mod1 = glmer(score ~ week+lateral+typsurg+age + (1 | dog), data = dados,
+             family=binomial("logit"),nAGQ=100)
+summary(mod1)
+
+```
+
+
+
+## b)
+
+```{r echo=T,message=F,warning=F}
+
+
+mod2 = glmmPQL(score ~ week+lateral+typsurg+age, random =~ 1 | dog, data = dados,
+               family=binomial("logit"))
+summary(mod2)
+
+```
