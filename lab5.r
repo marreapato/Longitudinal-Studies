@@ -28,10 +28,11 @@ mod = glmer(score ~ week+lateral+typsurg+age + (1 | dog), data = dados,
             family=binomial("logit"))
 summary(mod)
 
-source("icc(1).R")
+summary(mod)$coefficients[,1]
+
 tau2 = as.numeric(data.frame(VarCorr(mod))["vcov"])
 
-icc(mod)
+tau2/(tau2+(pi^2)/3)#icc
 ###########3
 #c) modelo 2
 
