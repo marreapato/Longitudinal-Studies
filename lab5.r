@@ -46,3 +46,14 @@ exp(summary(mod)$coefficients[,1])+1.96-tau2
 
 #e)
 
+#a)
+mod1 = glmer(score ~ week+lateral+typsurg+age + (1 | dog), data = dados,
+             family=binomial("logit"),nAGQ=100)
+summary(mod1)
+
+#b)
+
+mod2 = glmmPQL(score ~ week+lateral+typsurg+age, random =~ 1 | dog, data = dados,
+               family=binomial("logit"))
+summary(mod2)
+
