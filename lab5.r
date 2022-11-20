@@ -38,4 +38,11 @@ tau2/(tau2+(pi^2)/3)#icc
 
 #####
 #d)
+#checar
+exp(summary(mod)$coefficients[,1])+1.96*tau2
+exp(summary(mod)$coefficients[,1])
+exp(summary(mod)$coefficients[,1])+1.96-tau2
+
+
+#e)
 
