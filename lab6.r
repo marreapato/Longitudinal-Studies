@@ -45,10 +45,24 @@ dados <- read.table("dogs(1).txt",header=T)
 gee2 = geeglm(score~week+lateral+typsurg+age, data = dados, id = dog, family = binomial, corstr = "ar1")
 summary(gee2)
 
-se=summary(gee2)$coefficients["Std.err"]
+gee2.Ex = update(gee2, corstr = "exchangeable")
+summary(gee2.Ex)
+#n estruturada
+
+gee2.UN = update(gee2, corstr = "unstructured")
+summary(gee2.UN)
+
+## B)
+
+sapply(list(gee2, gee2.Ex, gee2.UN), QIC)
+
+QIC(gee2.Ex)#modelo 2
+
+
+se=summary(gee2.Ex)$coefficients["Std.err"]
 lower = summary(gee2)$coefficients["Estimate"] + (qnorm(.025)*se)
 upper = summary(gee2)$coefficients["Estimate"] + (qnorm(.975)*se)
-cbind(summary(gee2)$coefficients["Estimate"] , lower, upper)
+#cbind(summary(gee2)$coefficients["Estimate"] , lower, upper)
 
 
 cbind(exp(summary(gee2)$coefficients["Estimate"]) , exp(lower), exp(upper))
