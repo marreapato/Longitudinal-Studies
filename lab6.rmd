@@ -1,0 +1,46 @@
+---
+title: "Laboratorio 6"
+output: html_document
+---
+
+# Dados de Insulina (insulin.dat)
+
+## A)
+
+```{r echo=F,message=F,warning=F}
+
+#install.packages("geepack")
+library(tidyverse)
+library(geepack)
+
+#dogs
+dados <- read.table("insulin(3).dat",header = F)
+colnames(dados) <- c("id","tempo","nas","grupo")
+#1)
+##a)
+#ar1
+
+
+```
+
+
+Ajuste AR1
+
+```{r echo=F,message=F,warning=F}
+
+
+gee1 = geeglm(nas ~ tempo + grupo, data = dados, id = id, family = gaussian, corstr ="ar1")
+summary(gee1)
+
+```
+
+## B)
+
+Para o teste de Mauchly temos evidência a um nível de 5% de significância para rejeitar a hípotese de esfericidade, isso implica que não será possível usar testes univariados (ANOVA) para a avaliação de tendências (linear, quadratica, cubica, etc).
+
+```{r echo=F,message=F,warning=F}
+
+sumario_manova$sphericity.tests
+```
+
+
